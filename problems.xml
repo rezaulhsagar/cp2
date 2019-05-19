@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<Problems>
+  <Problem>
+      <Name>Alu</Name>
+      <Source>Bagan</Source>
+      <Description>Ei bagan e alu paoa jay</Description>
+      <Editorial>Ki bhabe bagan theke alu tulte hoy ta ami bolbo</Editorial>
+      <Code>#include&lt;stdio.h&gt;
+using namespace std
+from bagan import alu_tulo
+bagan b = new bagan(no_of_alu = 100);
+alu_box = alu_tulo(b);
+lol so funny;
+printf(&quot;Hello alu box&quot;);</Code>
+  </Problem>
+  <Problem>
+      <Name>Potol</Name>
+      <Source>Janina</Source>
+      <Description>Ei janina e potol paoa jay</Description>
+      <Editorial>Ki bhabe janina theke potol tulte hoy ta ami bolbo</Editorial>
+      <Code>#include&lt;stdio.h&gt;
+using namespace std
+from bagan import alu_tulo
+bagan b = new bagan(no_of_alu = 100);
+alu_box = alu_tulo(b);
+lol so funny;
+printf(&quot;Hello alu box&quot;);</Code>
+  </Problem>
+  <Problem>
+      <Name>Pipe</Name>
+      <Source>POJ</Source>
+      <Description>আপাতত নাই</Description>
+      <Editorial>পাইপের বেন্ড বা বাঁকের শুরু আর শেষ, অর্থাৎ (x, y) আর (x, y - 1) সেগমেন্ট গুলা নিতে হবে। এখন যদি একটা সরলরেখা সবগুলা সেগমেন্ট কে ছেদ করে তাইলে তো পুরো পাইপটা দিয়ে লাইট পাস করতে পারবে। আর যদি না হয় তাইলে শুরু থেকে যে সেগমেন্ট এ ছেদ করবে না, তার ঠিক আগের অংশেই পাইপের উপরের অথবা নিচের কোন এক জায়গা দিয়ে রেখা ছেদ করবে। এখন কথা হচ্ছে, রেখা আমরা কই থেকে পাবো? একটু চিন্তা করলে দেখা যাবে, লাইট কিন্তু সবসময় বাঁকের মধ্যে বাধা পাবে। তো এইখানে সবরকম উপায়ে সেই সেগমেন্টগুলো দিয়ে সরলরেখা বানাতে হবে।</Editorial>
+      <Code>#include &lt;algorithm&gt;
+#include &lt;cassert&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;sstream&gt;
+#include &lt;vector&gt;
+
+#define filein freopen (&quot;in.txt&quot;, &quot;r&quot;, stdin)
+#define fileout freopen (&quot;out.txt&quot;, &quot;w&quot;, stdout)
+#define dbg(x) cerr &lt;&lt; #x &lt;&lt; &quot;: &quot; &lt;&lt; x &lt;&lt; endl
+
+using namespace std;
+typedef long long ll;
+
+const int maxn = 22;
+const double eps = 1e-8;
+
+struct pt{
+    double x, y;
+    pt(){}
+    pt(double a, double b){
+        x = a; y = b;
+    }
+    void get(){
+        scanf (&quot;%lf %lf&quot;, &amp;x, &amp;y);
+    }
+};
+
+struct line{
+    double a, b, c;
+    line (){}
+    line (pt p, pt q){
+        a = p.y - q.y;
+        b = q.x - p.x;
+        c = -a * p.x - b * p.y;
+    }
+    double side (const pt &amp;p){
+        return a * p.x + b * p.y + c;
+    }
+    bool parallel (const line &amp;other){
+        return fabs (a * other.b - b * other.a) &lt; eps;
+    }
+    pt intersect (const line &amp;other){
+        double d = a * other.b - b * other.a;
+        double dx = b * other.c - c * other.b;
+        double dy = c * other.a - a * other.c;
+        return pt (dx / d, dy / d);
+    }
+};
+
+pt a[maxn], b[maxn];
+
+int main (){
+//    filein;
+    int n;
+    while (~scanf (&quot;%d&quot;, &amp;n) and n){
+        for (int i = 0; i &lt; n; i++){
+            a[i].get();
+            b[i] = pt (a[i].x, a[i].y - 1.0);
+        }
+        bool through = false;
+        double maxi = a[0].x;
+        for (int i = 0; i &lt; n and !through; i++){
+            for (int j = 0; j &lt; n; j++){
+                if (i == j) continue;
+                line L (a[i], b[j]);
+                int k;
+                for (k = 0; k &lt; n; k++){
+                    if (L.side (a[k]) * L.side (b[k]) &gt; eps)
+                        break;
+                }
+                if (k == n){
+                    through = true;
+                    break;
+                }
+                if (k){
+                    pt out;
+                    if (L.side (a[k]) * L.side (a[k - 1]) &lt; eps){
+                        out = L.intersect (line (a[k], a[k - 1]));
+                        maxi = max (maxi, out.x);
+                    }
+                    if (L.side (b[k]) * L.side (b[k - 1]) &lt; eps){
+                        out = L.intersect (line (b[k], b[k - 1]));
+                        maxi = max (maxi, out.x);
+                    }
+                }
+            }
+        }
+        if (through) puts (&quot;Through all the pipe.&quot;);
+        else printf (&quot;%.2f\n&quot;, maxi);
+    }
+    return 0;
+}</Code>
+  </Problem>
+</Problems>
